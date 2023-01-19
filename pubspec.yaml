@@ -17,6 +17,7 @@ dependencies:
   http: ^0.13.5
   loading_animation_widget: ^1.2.0+4
   internet_connection_checker: ^1.0.0+1
+  language_picker: ^0.4.3
 
 dev_dependencies:
   flutter_test:

@@ -1,22 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:language_picker/language_picker_dialog.dart';
+import 'package:language_picker/languages.dart';
+
 import 'package:serv5_task/view/screens/albums_screen.dart';
 import 'package:serv5_task/view/widgets/custom_button.dart';
 import 'package:serv5_task/view/widgets/input_field.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
+
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
+  Language? _selectedDialogLanguage;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.1, vertical: screenHeight * 0.06),
+                horizontal: screenWidth * 0.1, vertical: screenHeight * 0.01),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.center,
@@ -37,7 +48,7 @@ class LogInScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight * 0.02,
+                  height: screenHeight * 0.01,
                 ),
                 const InputField(
                   title: 'Email',
@@ -46,6 +57,20 @@ class LogInScreen extends StatelessWidget {
                 const InputField(
                   title: 'Password',
                   hint: 'Enter your Password',
+                ),
+                InputField(
+                  title: 'Language',
+                  hint: _selectedDialogLanguage == null
+                      ? 'Select your language'
+                      : '${_selectedDialogLanguage!.name} (${_selectedDialogLanguage!.isoCode})',
+                  widget: IconButton(
+                    onPressed: () {
+                      _openLanguagePickerDialog();
+                    },
+                    icon: const Icon(
+                      Icons.language,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: screenHeight * 0.04,
@@ -102,4 +127,34 @@ class LogInScreen extends StatelessWidget {
       ),
     );
   }
+
+  void _openLanguagePickerDialog() => showDialog(
+        context: context,
+        builder: (context) => Theme(
+          data: Theme.of(context).copyWith(primaryColor: Colors.blue),
+          child: LanguagePickerDialog(
+            titlePadding: const EdgeInsets.all(8.0),
+            searchCursorColor: Colors.pinkAccent,
+            searchInputDecoration: const InputDecoration(hintText: 'Search...'),
+            isSearchable: true,
+            title: const Text('Select your language'),
+            onValuePicked: (Language language) => setState(
+              () {
+                _selectedDialogLanguage = language;
+                debugPrint(_selectedDialogLanguage!.name);
+                debugPrint(_selectedDialogLanguage!.isoCode);
+              },
+            ),
+            itemBuilder: (Language language) => Row(
+              children: <Widget>[
+                Text(language.name),
+                const SizedBox(width: 8.0),
+                Flexible(
+                  child: Text("(${language.isoCode})"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }
