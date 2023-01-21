@@ -18,12 +18,10 @@ task using Flutter
 
 ## Result
 
-[MIT](https://choosealicense.com/licenses/mit/)
-
 https://user-images.githubusercontent.com/78942298/213468469-610ac425-52bf-4205-9550-74e7d77cbf44.mp4
 
 ## License
 
-
+[MIT](https://choosealicense.com/licenses/mit/)
 
 
